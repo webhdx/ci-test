@@ -1,0 +1,28 @@
+name: SonarCloud CI Analysis
+on:
+    workflow_run:
+        workflows:
+            - "CI"
+        types:
+            - completed
+jobs:
+    sonarcloud:
+        name: SonarCloud
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+            - name: Download Artifacts
+              uses: dawidd6/action-download-artifact@v2
+              with:
+                  workflow: ci.yml
+                  name: code-coverage
+
+            - name: Add Coverage PR Comment
+              uses: marocchino/sticky-pull-request-comment@v2
+              with:
+                  number: ${{ env.PR_NUMBER }}
+                  recreate: true
+                  message: |
+                      Hello, world!
