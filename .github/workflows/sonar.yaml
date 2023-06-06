@@ -9,35 +9,21 @@ jobs:
     sonarcloud:
         name: SonarCloud
         runs-on: ubuntu-latest
-        permissions:
-            pull-requests: write
         steps:
             - uses: actions/checkout@v3
               with:
                   fetch-depth: 0
                   ref: ${{ github.event.workflow_run.head_branch }}
-            - run: git branch
-            - run: env
 
-            - uses: hmarr/debug-action@v2
-
-            - name: Download Artifacts
-              uses: dawidd6/action-download-artifact@v2
+            - name: SonarCloud Scan
+              uses: matrix-org/sonarcloud-workflow-action@v1
               with:
-                  workflow: ci.yaml
-                  name: code-coverage
-                  run_id: ${{ github.event.workflow_run.id }}
-                  path: artifacts/
-            - name: Load PR number
-              run: |
-                  pwd || cwd
-                  ls -la $(pwd || cwd)
-                  echo "PR_NUMBER=$(cat artifacts/pr_number)" >> $GITHUB_ENV
-            - name: Add Coverage PR Comment
-              if: "contains(github.event.workflow_run.event, 'pull_request')"
-              uses: marocchino/sticky-pull-request-comment@v2
-              with:
-                  number: ${{ env.PR_NUMBER }}
-                  recreate: true
-                  message: |
-                      Hello, world!
+                  is_pr: ${{ github.event.workflow_run.event == 'pull_request' }}
+                  owner: ${{ github.event.workflow_run.head_repository.owner.login }}
+                  branch: ${{ github.event.workflow_run.head_branch }}
+                  revision: ${{ github.event.workflow_run.head_sha }}
+                  token: ${{ secrets.SONAR_TOKEN }}
+                  coverage_run_id: ${{ github.event.workflow_run.id }}
+                  coverage_workflow_name: ci.yml
+                  coverage_artifact_name: code-coverage-report
+                  coverage_extract_path: coverage

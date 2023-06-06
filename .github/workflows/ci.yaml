@@ -21,9 +21,9 @@ jobs:
               env:
                   PR_NUMBER: ${{ github.event.number }}
               run: |
-                  mkdir -p ./pr
-                  echo $PR_NUMBER > ./pr/pr_number
+                  mkdir -p ./coverage
+                  echo "test" > ./coverage/coverage-tests.xml
             - uses: actions/upload-artifact@v3
               with:
-                  name: code-coverage
-                  path: pr/
+                  name: code-coverage-report
+                  path: coverage/
