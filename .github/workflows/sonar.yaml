@@ -21,6 +21,7 @@ jobs:
               with:
                   workflow: ci.yaml
                   name: code-coverage
+                  run_id: ${{ github.event.workflow_run.workflow_id }}
             - name: Load PR number
               run: |
                   ls -la
