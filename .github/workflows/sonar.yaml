@@ -30,6 +30,8 @@ jobs:
                   path: artifacts/
             - name: Load PR number
               run: |
+                  pwd || cwd
+                  ls -la $(pwd || cwd)
                   echo "PR_NUMBER=$(cat artifacts/pr_number)" >> $GITHUB_ENV
             - name: Add Coverage PR Comment
               if: "contains(github.event.workflow_run.event, 'pull_request')"
