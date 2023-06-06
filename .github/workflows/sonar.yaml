@@ -9,10 +9,15 @@ jobs:
     sonarcloud:
         name: SonarCloud
         runs-on: ubuntu-latest
+        permissions:
+            pull-requests: write
         steps:
             - uses: actions/checkout@v3
               with:
                   fetch-depth: 0
+                  ref: ${{ github.event.workflow_run.head_branch }}
+            - run: git branch
+            - run: env
 
             - uses: hmarr/debug-action@v2
 
@@ -25,8 +30,6 @@ jobs:
                   path: artifacts/
             - name: Load PR number
               run: |
-                  ls -la
-                  cat artifacts/pr_number
                   echo "PR_NUMBER=$(cat artifacts/pr_number)" >> $GITHUB_ENV
             - name: Add Coverage PR Comment
               if: "contains(github.event.workflow_run.event, 'pull_request')"
