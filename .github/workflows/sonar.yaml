@@ -17,7 +17,7 @@ jobs:
             - name: Download Artifacts
               uses: dawidd6/action-download-artifact@v2
               with:
-                  workflow: ci.yml
+                  workflow: ci.yaml
                   name: code-coverage
                   if_no_artifact_found: ignore
 
