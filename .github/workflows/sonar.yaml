@@ -23,6 +23,7 @@ jobs:
                   name: code-coverage
             - name: Load PR number
               run: |
+                  cat pr_number
                   echo "PR_NUMBER=$(cat pr_number)" >> $GITHUB_ENV
             - name: Add Coverage PR Comment
               uses: marocchino/sticky-pull-request-comment@v2
