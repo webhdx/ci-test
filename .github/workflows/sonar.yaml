@@ -22,11 +22,12 @@ jobs:
                   workflow: ci.yaml
                   name: code-coverage
                   run_id: ${{ github.event.workflow_run.id }}
+                  path: artifacts/
             - name: Load PR number
               run: |
                   ls -la
-                  cat pr_number
-                  echo "PR_NUMBER=$(cat pr_number)" >> $GITHUB_ENV
+                  cat artifacts/pr_number
+                  echo "PR_NUMBER=$(cat artifacts/pr_number)" >> $GITHUB_ENV
             - name: Add Coverage PR Comment
               if: "contains(github.event.workflow_run.event, 'pull_request')"
               uses: marocchino/sticky-pull-request-comment@v2
