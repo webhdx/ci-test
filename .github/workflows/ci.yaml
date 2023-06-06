@@ -16,6 +16,7 @@ jobs:
                 php:
                     - '8.0'
         steps:
+            - uses: hmarr/debug-action@v2
             - name: Save PR number
               env:
                   PR_NUMBER: ${{ github.event.number }}
